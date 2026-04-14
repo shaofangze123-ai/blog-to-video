@@ -46,43 +46,46 @@ export BLOG_VIDEO_API_KEY="your-api-key"
 # 生成视频
 python main.py your-blog-post.md
 
-# 指定输出目录
-python main.py your-blog-post.md output/my-video
 ```
 
-### 输出
+### 输出结构
 
 ```
-output/your-blog-post/
-├── script.json              # 分镜脚本
-├── slides_vertical.html     # 竖屏幻灯片
-├── slides_horizontal.html   # 横屏幻灯片
-├── audio/                   # TTS 音频文件
-│   ├── slide_00.mp3
-│   ├── slide_01.mp3
-│   └── ...
-├── audio_info.json          # 音频时长元数据
-├── video_vertical.mp4       # 抖音视频（9:16）
-└── video_horizontal.mp4     # YouTube 视频（16:9）
+output/
+├── videos/                                    # 最终视频（统一存放）
+│   ├── video_20260414_ai-cosmos_douyin.mp4    # 抖音版
+│   └── video_20260414_ai-cosmos_youtube.mp4   # YouTube 版
+└── temp/                                      # 中间文件（按任务隔离）
+    └── video_20260414_ai-cosmos/
+        ├── script.json
+        ├── slides_vertical.html
+        ├── slides_horizontal.html
+        ├── audio/
+        │   ├── slide_00.mp3
+        │   └── ...
+        └── audio_info.json
 ```
+
+视频命名规则：`video_日期_标题slug_平台.mp4`
 
 ## 项目结构
 
 ```
 blog-to-video/
-├── main.py          # 主入口，串联全流程
-├── analyze.py       # 博客分析 + 分镜脚本生成（LLM）
-├── slides.py        # HTML 幻灯片生成（双尺寸）
-├── tts.py           # TTS 音频生成（edge-tts）
-├── render.py        # 视频渲染（Playwright + ffmpeg）
-├── config.py        # 全局配置
-├── utils.py         # 工具函数
-└── requirements.txt # Python 依赖
+├── main.py              # 主入口，串联全流程
+├── src/
+│   ├── analyze.py       # 博客分析 + 分镜脚本生成（LLM）
+│   ├── slides.py        # HTML 幻灯片生成（双尺寸）
+│   ├── tts.py           # TTS 音频生成（edge-tts）
+│   ├── render.py        # 视频渲染（Playwright + ffmpeg）
+│   ├── config.py        # 全局配置
+│   └── utils.py         # 工具函数
+└── requirements.txt     # Python 依赖
 ```
 
 ## 配置
 
-编辑 `config.py` 可调整：
+编辑 `src/config.py` 可调整：
 
 | 配置项 | 说明 | 默认值 |
 |--------|------|--------|

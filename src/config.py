@@ -21,3 +21,5 @@ PAGE_PADDING = 1.0  # TTS 结束后额外停留
 
 # 输出目录
 OUTPUT_DIR = "output"
+VIDEOS_DIR = "output/videos"   # 最终视频统一存放
+TEMP_DIR = "output/temp"       # 中间文件（脚本、音频、幻灯片、帧）
