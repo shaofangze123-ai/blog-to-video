@@ -5,9 +5,20 @@ API_BASE_URL = "https://ai.opendoor.cn/v1"
 API_KEY = ""  # 从环境变量 BLOG_VIDEO_API_KEY 读取
 CHAT_MODEL = "gpt-4.1-mini"
 
-# TTS
-TTS_VOICE = "zh-CN-XiaoxiaoNeural"
-TTS_RATE = "+0%"
+# TTS 引擎: "volcano" 或 "edge"
+TTS_ENGINE = "volcano"
+
+# 火山引擎 TTS
+VOLCANO_APP_ID = "0dfbc5c4-3709-4f8f-b830-3e23944ec47f"
+VOLCANO_TOKEN = ""       # 从环境变量 VOLCANO_TTS_TOKEN 读取
+VOLCANO_CLUSTER = "volcano_tts"
+VOLCANO_VOICE = "saturn_zh_male_tiancaitongzhuo_tob"
+VOLCANO_ENCODING = "mp3"
+VOLCANO_SPEED_RATIO = 1.0
+
+# Edge TTS（备选）
+EDGE_VOICE = "zh-CN-XiaoxiaoNeural"
+EDGE_RATE = "+0%"
 
 # 视频尺寸
 SIZES = {
