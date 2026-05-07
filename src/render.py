@@ -96,14 +96,21 @@ def _merge_audio(audio_info: list, output_dir: str, size_key: str) -> str:
     return merged_path
 
 
-def _compose_video(frames_dir: str, audio_path: str, output_path: str):
-    """ffmpeg 合成最终视频"""
+def _compose_video(frames_dir: str, audio_path: str, output_path: str, subtitle_path: str = None):
+    """ffmpeg 合成最终视频（可选烧录字幕）"""
     print(f"[合成] 正在合成视频...")
     cmd = [
         FFMPEG, "-y",
         "-framerate", "30",
         "-i", os.path.join(frames_dir, "frame_%06d.png"),
         "-i", audio_path,
+    ]
+    if subtitle_path and os.path.exists(subtitle_path):
+        # 用 ass 滤镜烧录字幕，路径需转义反斜杠和冒号
+        safe_path = subtitle_path.replace("\\", "/").replace(":", "\\:")
+        cmd += ["-vf", f"ass='{safe_path}'"]
+        print(f"[合成] 烧录字幕: {subtitle_path}")
+    cmd += [
         "-c:v", "libx264",
         "-preset", "medium",
         "-crf", "23",
@@ -122,10 +129,12 @@ def _compose_video(frames_dir: str, audio_path: str, output_path: str):
     print(f"[合成] 完成: {output_path} ({size_mb:.1f} MB)")
 
 
-def render_video(html_paths: dict, audio_info: list, output_dir: str) -> dict:
+def render_video(html_paths: dict, audio_info: list, output_dir: str, subtitle_paths: dict = None) -> dict:
     """渲染双尺寸视频"""
     ensure_dir(output_dir)
     video_paths = {}
+    if subtitle_paths is None:
+        subtitle_paths = {}
 
     for size_key, html_path in html_paths.items():
         label = SIZES[size_key]["label"]
@@ -139,10 +148,11 @@ def render_video(html_paths: dict, audio_info: list, output_dir: str) -> dict:
         # 2. 合并音频
         audio_path = _merge_audio(audio_info, output_dir, size_key)
 
-        # 3. 合成视频
+        # 3. 合成视频（含字幕）
         video_filename = f"video_{size_key}.mp4"
         video_path = os.path.join(output_dir, video_filename)
-        _compose_video(frames_dir, audio_path, video_path)
+        sub_path = subtitle_paths.get(size_key)
+        _compose_video(frames_dir, audio_path, video_path, sub_path)
 
         video_paths[size_key] = video_path
 

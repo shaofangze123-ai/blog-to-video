@@ -8,11 +8,13 @@ CHAT_MODEL = "gpt-4.1-mini"
 # TTS 引擎: "volcano" 或 "edge"
 TTS_ENGINE = "volcano"
 
-# 火山引擎 TTS
-VOLCANO_APP_ID = "0dfbc5c4-3709-4f8f-b830-3e23944ec47f"
-VOLCANO_TOKEN = ""       # 从环境变量 VOLCANO_TTS_TOKEN 读取
-VOLCANO_CLUSTER = "volcano_tts"
-VOLCANO_VOICE = "saturn_zh_male_tiancaitongzhuo_tob"
+# 火山引擎 TTS (V3 WebSocket API)
+VOLCANO_APP_ID = "2132661971"
+VOLCANO_TOKEN = ""  # 从环境变量 VOLCANO_TTS_TOKEN 读取
+VOLCANO_VOICES = [
+    {"id": "zh_male_liufei_uranus_bigtts", "label": "male_liufei"},
+    {"id": "zh_male_sophie_uranus_bigtts", "label": "female_sophie"},
+]
 VOLCANO_ENCODING = "mp3"
 VOLCANO_SPEED_RATIO = 1.0
 
